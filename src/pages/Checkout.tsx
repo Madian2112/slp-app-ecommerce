@@ -3,16 +3,16 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useNavigate } from "react-router-dom"
 import { ArrowLeft, CreditCard } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useCart } from "@/lib/cart-context"
-import { useOrders } from "@/lib/orders-context"
+import { Button } from "../../components/ui/button"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
+import { useCart } from "../../lib/cart-context"
+import { useOrders } from "../../lib/orders-context"
 
-export default function CheckoutPage() {
-  const router = useRouter()
+export default function Checkout() {
+  const navigate = useNavigate()
   const { items, getTotal, clearCart } = useCart()
   const { addOrder } = useOrders()
   const [isProcessing, setIsProcessing] = useState(false)
@@ -61,19 +61,19 @@ export default function CheckoutPage() {
 
     addOrder(order)
     clearCart()
-    router.push(`/order-confirmation/${order.id}`)
+    navigate(`/order-confirmation/${order.id}`)
   }
 
   if (items.length === 0) {
-    router.push("/cart")
+    navigate("/cart")
     return null
   }
 
   return (
-    <div className="min-h-screen bg-background pb-32">
+    <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center gap-4 px-4">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">Finalizar Compra</h1>
@@ -234,7 +234,7 @@ export default function CheckoutPage() {
       </form>
 
       {/* Bottom Action */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background p-4">
+      <div className="fixed bottom-16 left-0 right-0 border-t bg-background p-4">
         <div className="container">
           <Button className="w-full" size="lg" onClick={handleSubmit} disabled={isProcessing}>
             {isProcessing ? (

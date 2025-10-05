@@ -1,15 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useNavigate } from "react-router-dom"
 import { ArrowLeft, Minus, Plus, ShoppingCart, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useCart } from "@/lib/cart-context"
-import { products } from "@/lib/mock-data"
+import { Button } from "../../components/ui/button"
+import { useCart } from "../../lib/cart-context"
+import { products } from "../../lib/mock-data"
 
-export default function ProductDetailPage() {
+export default function ProductDetail() {
   const params = useParams()
-  const router = useRouter()
+  const navigate = useNavigate()
   const { addItem } = useCart()
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
@@ -22,15 +22,15 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     addItem(product, quantity)
-    router.push("/cart")
+    navigate("/cart")
   }
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center gap-4 px-4">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">Detalle del Producto</h1>
@@ -113,7 +113,7 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Bottom Actions */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background p-4">
+      <div className="fixed bottom-16 left-0 right-0 border-t bg-background p-4">
         <div className="container flex items-center gap-4">
           <div className="flex items-center gap-2 rounded-lg border">
             <Button
